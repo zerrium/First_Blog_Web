@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Tugas Kelompok</title>
+    </head>
+    <body>
+        <h2>List Anggota Kelompok</h2>
+
+        {# menampilkan semua elemen dalam variabel listAnggota #}
+        <ul>
+            {% for value in listAnggota %}
+            <li>
+                <a>
+                    {{ value }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

@@ -48,10 +48,30 @@
                         integer that is not an odd number is an even number. If an even number is divided by two, the result is another integer. On the other hand, an odd number, when divided by two, will result in a fraction.<br><br>Since odd numbers
                         are integers, negative numbers can be odd.&nbsp;</p>
                     <h2>Tool</h2>
-                    <form method="post" action="#">
-                        <p style="margin-bottom: 5px;">Enter a number:&nbsp;</p><input class="form-control" type="text" id="input" inputmode="numeric" required="" style="margin-right: 0;margin-bottom: 10px;margin-top: 0px;margin-left: 0;"><button class="btn btn-primary" id="submit"
-                            type="submit" style="margin-top: 0px;margin-right: 10px;margin-left: 10px;margin-bottom: 10px;" value="submit">submit</button></form>
-                    <p id="output">Output: -<br></p>
+                    <form method="post" action="/prime_odd">
+                        <p style="margin-bottom: 5px;">Enter a number:&nbsp;</p>
+                        <input class="form-control" type="text" id="input" name="input" inputmode="numeric" required="" style="margin-right: 0;margin-bottom: 10px;margin-top: 0px;margin-left: 0;">
+                        <button class="btn btn-primary" id="submit" type="submit" style="margin-top: 0px;margin-right: 10px;margin-left: 10px;margin-bottom: 10px;" value="submit">submit</button>
+                        <input id="scroll" type="hidden" name="scroll" value="" />
+                    </form>
+                    {% if error %}
+                        <p id="error">Message:<br>
+                            {{ error }}<br>
+                        </p>
+                    {% endif %}
+
+                    {% if output %}
+                        <p id="output">Output: {{ output[0] }}<br>
+                            Is a prime number? {{ output[1] }}<br>
+                            Is an odd number? {{ output[2] }}
+                        </p>
+                    {% endif %}
+
+                    {% if scroll %}
+                        <script>
+                            window.scroll(0, {{ scroll }});
+                        </script>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -73,6 +93,11 @@
     <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/clean-blog.js') }}"></script>
+    <script>
+        document.getElementById("submit").onclick = function(){
+            document.getElementById("scroll").value = $(document).scrollTop();
+        };
+    </script>
 </body>
 
 </html>

@@ -61,7 +61,10 @@
                     {% endif %}
 
                     {% if output %}
-                        <p id="output">Output: {{ output[0] }}<br>
+                        <script>
+                            document.getElementById("input").value = {{ output[0] }};
+                        </script>
+                        <p id="output">Output:<br>
                             Is a prime number? {{ output[1] }}<br>
                             Is an odd number? {{ output[2] }}
                         </p>

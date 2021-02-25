@@ -44,18 +44,19 @@
                         they have three dimensions and so are known as 3D shapes. The D in 3D stands for dimensional. 3D shapes occupy space. In a world with three dimensions, you can travel forward, backward, right, left, and even up and down. </p>
                     <h2>Tool</h2>
                     <p class="text-justify" style="margin-bottom: 10px;">Choose shape:<br></p>
-                    <form method="post" action="/3d_shapes">
+                    <form method="post" action="/3d_shapes" name="form">
                         <div class="form-check"><input class="form-check-input" type="radio" id="cylinder" style="margin-top: 8px;" name="shape" value="cylinder"><label class="form-check-label" for="cylinder">Cylinder</label></div>
                         <div class="form-check"><input class="form-check-input" type="radio" id="cube" style="margin-top: 8px;" name="shape" value="cube"><label class="form-check-label" for="cube">Cube</label></div>
                         <div class="form-check"><input class="form-check-input" type="radio" id="sphere" style="margin-top: 8px;" name="shape" value="sphere"><label class="form-check-label" for="sphere">Sphere</label></div>
                         <div class="form-check"><input class="form-check-input" type="radio" id="cone" style="margin-top: 8px;" name="shape" value="cone"><label class="form-check-label" for="cone">Cone</label></div>
                         <div id="input1g">
-                            <p id="input1p" style="margin-bottom: 5px;">A</p><input class="form-control" type="text" id="input1" required="" inputmode="numeric"></div>
+                            <p id="input1p" style="margin-bottom: 5px;">A</p><input class="form-control" type="text" id="input1" required="" inputmode="numeric" name="input1"></div>
                         <div id="input2g">
-                            <p id="input2p" style="margin-bottom: 5px;margin-top: 10px;">A</p><input class="form-control" type="text" id="input2" inputmode="numeric" required=""></div>
+                            <p id="input2p" style="margin-bottom: 5px;margin-top: 10px;">A</p><input class="form-control" type="text" id="input2" inputmode="numeric" name="input2"></div>
                         <div id="input3g">
-                            <p id="input3p" style="margin-bottom: 5px;margin-top: 10px;">A</p><input class="form-control" type="text" id="input3" inputmode="numeric" required=""></div>
+                            <p id="input3p" style="margin-bottom: 5px;margin-top: 10px;">A</p><input class="form-control" type="text" id="input3" inputmode="numeric" name="input3"></div>
                         <button class="btn btn-primary" type="submit" id="submit" style="margin-top: 15px;" value="submit">submit</button>
+                        <input id="scroll" type="hidden" name="scroll" value="" />
                     </form>
                    {% if error %}
                         <p id="error">Message:<br>
@@ -65,7 +66,7 @@
 
                     {% if output %}
                         <script>
-                            $('input[name=shape][value="{{ output[0] }}"]').click();
+                            document.getElementById("{{ output[0] }}").checked = true;
                             document.getElementById("input1").value = {{ output[1] }};
                             document.getElementById("input2").value = {{ output[2] }};
                             document.getElementById("input3").value = {{ output[3] }};
@@ -123,10 +124,13 @@
             val = $('input[name="shape"]:checked').val();
             switch(val){
                 case "cylinder":
+                case "cone":
                     document.getElementById("input1p").innerHTML = "Base radius";
                     document.getElementById("input2p").innerHTML = "Height";
                     document.getElementById("input1g").style.visibility = "";
                     document.getElementById("input2g").style.visibility = "";
+                    document.getElementById("input2").required = true;
+                    document.getElementById("input3").required = false;
                     break;
                 case "cube":
                     document.getElementById("input1p").innerHTML = "Length";
@@ -135,16 +139,14 @@
                     document.getElementById("input1g").style.visibility = "";
                     document.getElementById("input2g").style.visibility = "";
                     document.getElementById("input3g").style.visibility = "";
+                    document.getElementById("input2").required = true;
+                    document.getElementById("input3").required = true;
                     break;
                 case "sphere":
                     document.getElementById("input1p").innerHTML = "Radius";
                     document.getElementById("input1g").style.visibility = "";
-                    break;
-                case "cone":
-                    document.getElementById("input1p").innerHTML = "Base radius";
-                    document.getElementById("input2p").innerHTML = "Height";
-                    document.getElementById("input1g").style.visibility = "";
-                    document.getElementById("input2g").style.visibility = "";
+                    document.getElementById("input2").required = false;
+                    document.getElementById("input3").required = false;
                     break;
             }
         }

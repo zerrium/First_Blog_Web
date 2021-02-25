@@ -1,33 +1,36 @@
 from flask import Flask, render_template, request
+from math import pi
+
 application = Flask(__name__)
+
 
 @application.route('/')
 def index():
     return render_template('index.html')
 
+
 @application.route('/about')
 def about():
     return render_template('about.html')
 
+
 @application.route('/prime_odd', methods=['POST', 'GET'])
 def prime_odd():
     if request.method == 'POST':
-        input = 0
         scroll = int(request.form['scroll']) + 20
-        #Menggunakan exception handling python untuk menangani input dari user yang bukan angka
+        # Menggunakan exception handling python untuk menangani input dari user yang bukan angka
         try:
-            input = int(request.form['input']) #Typecast dari string dari input text box ke integer
+            input1 = int(request.form['input'])  # Typecast dari string dari input text box ke integer
         except ValueError:
-            error = "Only number inputs are allowed!" #Ketika user menginput bukan angka
+            error = "Only number inputs are allowed!"  # Ketika user menginput bukan angka
             return render_template('prime_odd.html', error=error, scroll=scroll)
         else:
-            output = [] #variabel list
-            output.append(input)
+            output = [input1]  # variabel list
 
-            #Cek prima
-            if input > 1:
-                for i in range(2, input):
-                    if input%i == 0:
+            # Cek prima
+            if input1 > 1:
+                for i in range(2, input1):
+                    if input1 % i == 0:
                         output.append('No')
                         break
                 else:
@@ -36,19 +39,55 @@ def prime_odd():
                 output.append('No')
 
             # Cek ganjil/genap (menggunakan ternary operator)
-            output.append('No' if input % 2 == 0 else 'Yes')
+            output.append('No' if input1 % 2 == 0 else 'Yes')
 
             return render_template('prime_odd.html', output=output, scroll=scroll)
 
     return render_template('prime_odd.html')
 
-@application.route('/2d_shapes')
+
+@application.route('/2d_shapes', methods=['POST', 'GET'])
 def twod_shapes():
+    input2 = 0
+    if request.method == 'POST':
+        shape = request.form['shape']
+        scroll = int(request.form['scroll']) + 20
+        # Menggunakan exception handling python untuk menangani input dari user yang bukan angka
+        try:
+            input1 = int(request.form['input1'])  # Typecast dari string dari input text box ke integer
+            if shape == "rectangle" or shape == "triangle":
+                input2 = int(request.form['input2'])
+        except ValueError:
+            error = "Only number inputs are allowed!"  # Ketika user menginput bukan angka
+            return render_template('2d_shapes.html', error=error, scroll=scroll)
+        else:
+            output = [shape, input1, input2]  # variabel list
+
+            if shape == "circle":
+                output.append(pi * input1 ** 2)  # Luas lingkaran
+                output.append(2 * pi * input1)  # Keliling lingkaran
+            elif shape == "square":
+                output.append(input1 ** 2)  # Luas pesergi
+                output.append(4 * input1)  # Keliling pesergi
+            elif shape == "rectangle":
+                output.append(input1 * input2)  # Luas segi panjang
+                output.append(2 * (input1 + input2))  # Keliling segi panjang
+            elif shape == "triangle":
+                output.append(0.5 * input1 * input2)  # Luas segitiga
+                output.append("Not available")  # Keliling segitiga, tidak bisa karena inputnya belum tersedia
+            else:
+                error = "Please select a shape!"  # Ketika user tidak memilih shape
+                return render_template('2d_shapes.html', error=error, scroll=scroll)
+
+            return render_template('2d_shapes.html', output=output, scroll=scroll)
+
     return render_template('2d_shapes.html')
 
-@application.route('/3d_shapes')
+
+@application.route('/3d_shapes', methods=['POST', 'GET'])
 def threed_shapes():
     return render_template('3d_shapes.html')
+
 
 if __name__ == '__main__':
     application.run(debug=True)
